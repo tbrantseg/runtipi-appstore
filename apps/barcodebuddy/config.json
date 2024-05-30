@@ -13,5 +13,5 @@ Tags can be saved — if a new product contains the tag in the name, the product
   "version": "v1.8.17",
   "source": "https://github.com/Forceu/barcodebuddy",
   "exposable": true,
-  "supported_architectures": ["arm64", "amd64", "armhf", "x86"]
+  "supported_architectures": ["arm64", "amd64"]
 }
