@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  barcodebuddy: # Should be exact same name as "id" field in config.json
+    container_name: barcodebuddy # Should be exact same name as "id" field in config.json
+    image: f0rc3/barcodebuddy-docker:v1.8.1.5 # Try to avoid "latest" tag. As it may break configs in the future.
+    restart: unless-stopped # Do not change this
+    environment:
+      - TZ=${TZ} # Can use any env variable. See "environment variables" section in the docs
+    volumes:
+      - ${APP_DATA_DIR}/data/config:/config # Always start the path with ${APP_DATA_DIR}/data/. This will put all data inside app-data/my-app/data
+      - ${APP_DATA_DIR}/data/projects:/projects
+    ports:
+      - ${APP_PORT}:443
+    restart: unless-stopped
+    networks:
+      - tipi_main_network # That should not be changed
+    labels: # Use your editors search and replace feature to replace all instances of "barcodebuddy" with your app name in the traefik labels
+      # Main
+      traefik.enable: true
+      traefik.http.middlewares.barcodebuddy-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.barcodebuddy.loadbalancer.server.port: 443 # Should be the same as the app internal port so for this example 9443
+      # Web
+      traefik.http.routers.barcodebuddy-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.barcodebuddy-insecure.entrypoints: web
+      traefik.http.routers.barcodebuddy-insecure.service: barcodebuddy
+      traefik.http.routers.barcodebuddy-insecure.middlewares: barcodebuddy-web-redirect
+      # Websecure
+      traefik.http.routers.barcodebuddy.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.barcodebuddy.entrypoints: websecure
+      traefik.http.routers.barcodebuddy.service: barcodebuddy
+      traefik.http.routers.barcodebuddy.tls.certresolver: myresolver
+      # Local domain
+      traefik.http.routers.barcodebuddy-local-insecure.rule: Host(`barcodebuddy.${LOCAL_DOMAIN}`)
+      traefik.http.routers.barcodebuddy-local-insecure.entrypoints: web
+      traefik.http.routers.barcodebuddy-local-insecure.service: barcodebuddy
+      traefik.http.routers.barcodebuddy-local-insecure.middlewares: barcodebuddy-web-redirect
+      # Local domain secure
+      traefik.http.routers.barcodebuddy-local.rule: Host(`barcodebuddy.${LOCAL_DOMAIN}`)
+      traefik.http.routers.barcodebuddy-local.entrypoints: websecure
+      traefik.http.routers.barcodebuddy-local.service: barcodebuddy
+      traefik.http.routers.barcodebuddy-local.tls: true

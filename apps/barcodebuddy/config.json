@@ -1,0 +1,17 @@
+{
+  "name": "Barcode Buddy for Grocy",
+  "id": "barcodebuddy",
+  "available": true,
+  "short_desc": "Barcode functionality expansion for Grocy",
+  "author": "Forceu",
+  "port": 8982,
+  "categories": ["Automation", "Finance"],
+  "description": "Pass barcodes to Barcode Buddy. If already in the Grocys system, it will consume/add/open the product there.
+If an unknown barcode is passed, the product name will be looked up and a corresponding product can be chosen in the Web UI.
+Tags can be saved — if a new product contains the tag in the name, the product will be already preselected in the drop-down list.",
+  "tipi_version": 1,
+  "version": "v1.8.17",
+  "source": "https://github.com/Forceu/barcodebuddy",
+  "exposable": true,
+  "supported_architectures": ["arm64", "amd64", "armhf", "x86"]
+}
