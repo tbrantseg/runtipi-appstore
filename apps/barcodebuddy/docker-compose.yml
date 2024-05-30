@@ -2,7 +2,7 @@ version: "3.9"
 services:
   barcodebuddy: # Should be exact same name as "id" field in config.json
     container_name: barcodebuddy # Should be exact same name as "id" field in config.json
-    image: f0rc3/barcodebuddy-docker:v1.8.1.5 # Try to avoid "latest" tag. As it may break configs in the future.
+    image: f0rc3/barcodebuddy:v1.8.1.7 # Try to avoid "latest" tag. As it may break configs in the future.
     restart: unless-stopped # Do not change this
     environment:
       - TZ=${TZ} # Can use any env variable. See "environment variables" section in the docs
